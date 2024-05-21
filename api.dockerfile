@@ -3,7 +3,8 @@ FROM python:3.11.7-slim
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONPATH /app
 
-    
+RUN apt-get update 
+
 RUN pip install --upgrade pip
 
 RUN mkdir /app

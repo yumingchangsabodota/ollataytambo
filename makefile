@@ -3,7 +3,7 @@ remove:
 	docker rmi ollataytambo:latest
 
 build_local:
-	docker build -f Dockerfile -t ollataytambo:latest .
+	docker build -f api.dockerfile -t ollataytambo:latest .
 
 run_api:
 	docker run --env-file .env --rm --name ollataytambo_container \

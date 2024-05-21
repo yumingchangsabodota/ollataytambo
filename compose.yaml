@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    container_name: ollama
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ollataytambo
+  ollataytambo:
+    build:
+      context: .
+      dockerfile: ./api.dockerfile
+    image: ollataytambo:latest
+    container_name: ollataytambo_api
+    ports:
+      - 8086:8086
+    volumes:
+      - ./api:/app/api
+      - ./modules:/app/modules
+      - ./src:/app/src
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8086 --reload
+    env_file:
+      - .env
+    links:
+      - ollama:ollama
+    depends_on:
+      - ollama
+    networks:
+      - ollataytambo
+
+networks:
+  ollataytambo:
+    external: false
